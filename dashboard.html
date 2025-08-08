@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoalGlow  Dashboard</title>
+
+    <!-- Favicon -->
+    <link
+      rel="shortcut icon"
+      href="./assets/image/icon-progress.svg"
+      type="image/x-icon"
+    />
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- External CSS -->
+   <head>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+  <body>
+
+  <!-- Navigation Bar -->
+<nav class="navbar dashboard-navbar">
+  <div class="nav-brand dashboard-brand">GoalGlow</div>
+  <ul class="nav-links dashboard-nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#progress">Progress</a></li>
+    <li><a href="/logout">Logout</a></li>
+  </ul>
+</nav>
+
+<!-- Welcome Section -->
+<header class="dashboard-header">
+  <h1>Welcome, {{ username }}!</h1>
+  <p>Let’s build your personalized learning roadmap.</p>
+</header>
+
+<!-- Input Form -->
+<section class="dashboard-input-section">
+  <div class="dashboard-form-box">
+    <form action="/generate" method="POST">
+      <label for="skills">Your Skills:</label>
+      <input type="text" name="skills" id="skills" placeholder="e.g. HTML, CSS, Python" required />
+
+      <label for="goal">Target Goal:</label>
+      <input type="text" name="goal" id="goal" placeholder="e.g. Full Stack Developer" required />
+
+      <button type="submit" class="dashboard-generate-btn">Generate Roadmap</button>
+    </form>
+  </div>
+</section>
+
+<!-- Roadmap Section -->
+<section id="roadmap" class="dashboard-roadmap-section">
+  <h2>Roadmap</h2>
+  {% if roadmap %}
+    <ul class="dashboard-roadmap-list">
+      {% for item in roadmap %}
+        <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No roadmap generated yet.</p>
+  {% endif %}
+</section>
+
+<!-- Progress Tracker -->
+<section id="progress" class="dashboard-progress-section">
+  <h2>Your Progress</h2>
+  <div class="dashboard-progress-bars">
+    {% for skill in roadmap %}
+      <div class="dashboard-skill-progress">
+        <label>{{ skill }}</label>
+        <div class="progress">
+          <div class="progress-bar" style="width: {{ progress.get(skill, 0) }}%">
+            {{ progress.get(skill, 0) }}%
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <a href="/edit" class="dashboard-edit-btn">Edit Skills</a>
+</section>
+
+<!-- Footer -->
+<footer class="dashboard-footer">
+  <p>&copy; 2025 GoalGlow. All rights reserved.</p>
+</footer>
+<script src="{{ url_for('static', filename='script/script.js') }}"></script>
+</body>
+</html>
+
